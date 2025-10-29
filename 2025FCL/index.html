@@ -3,23 +3,14 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>2025FCL</title>
+    <title>2025FCL — Poster</title>
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="2025FCL" />
-    <meta property="og:description" content="Flower Creators Lounge 2025" />
+    <!-- 정적 OG: 소셜 미리보기 전용 (페이지는 순수 이미지 1장만 표시) -->
+    <meta property="og:title" content="Flower Creators Lounge 2025 — Poster" />
+    <meta property="og:description" content="전시 포스터" />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://kaywonflowerdesign.github.io/2025FCL/" />
-    <meta property="og:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg?v=2" />
-    <meta property="og:image:alt" content="Flower Creators Lounge 2025 Poster" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="1600" />
-
-    <!-- Twitter -->
+    <meta property="og:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="2025FCL" />
-    <meta name="twitter:description" content="Flower Creators Lounge 2025" />
-    <meta name="twitter:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg?v=2" />
 
     <style>
       /* reset */
@@ -27,21 +18,23 @@
       body { background: #ffffff; }
       img { display: block; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 
-      /* 데스크톱: 화면 가운데 정렬 + 업스케일 허용 */
+      /* 데스크톱: 중앙 정렬 + 업스케일 허용 (원본이 작아도 확대 표시) */
       @media (min-width: 769px) {
         body { display: grid; place-items: center; }
-        /* 원본이 작아도 크게 보이도록 width 지정 (max-width만 쓰면 원본 크기까지만 보임) */
-        img.poster { width: min(82vw, 1200px); height: auto; }
+        /* 원본보다 크게 보여주려면 width를 직접 지정해야 함 (max-width만 쓰면 원본 크기까지만 표시) */
+        img.poster { width: min(50vw, 650px); height: auto; }
       }
 
-      /* 모바일: 가로 100%로 꽉 차고 세로 스크롤 */
+      /* 모바일: 가로 100%로 꽉 차고 세로는 스크롤 */
       @media (max-width: 768px) {
-        body { display: block; overflow-y: auto; background: #ffffff; }
+        html, body { background: #ffffff; }
+        body { display: block; overflow-y: auto; }
         img.poster { width: 100%; height: auto; max-width: none; }
       }
     </style>
   </head>
   <body>
+    <!-- 같은 폴더의 이미지 사용 -->
     <img class="poster" src="./2025FCL.jpeg" alt="Flower Creators Lounge 2025 Poster" />
   </body>
 </html>
