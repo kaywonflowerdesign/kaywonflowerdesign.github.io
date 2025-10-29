@@ -3,121 +3,50 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>2025FCL · Poster Viewer</title>
+    <title>2025FCL</title>
 
-    <!-- Social preview: OG/Twitter (정적) -->
-    <!-- 참고: 소셜 봇은 JS를 실행하지 않으므로, 포스터별 정적 페이지에선 절대경로를 권장합니다. -->
+    <!-- Open Graph -->
     <meta property="og:title" content="2025FCL" />
     <meta property="og:description" content="Flower Creators Lounge 2025" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg" />
+    <meta property="og:url" content="https://kaywonflowerdesign.github.io/2025FCL/" />
+    <meta property="og:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg?v=2" />
+    <meta property="og:image:alt" content="Flower Creators Lounge 2025 Poster" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="1600" />
+
+    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="2025FCL" />
+    <meta name="twitter:description" content="Flower Creators Lounge 2025" />
+    <meta name="twitter:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg?v=2" />
+
 
     <style>
-      :root { --bg:#0b0b0c; --fg:#e9e9ea; --muted:#9aa0a6; --glass:#141416cc; --accent:#66c2ff; }
-      *{box-sizing:border-box}
-      html,body{height:100%}
-      body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.55 system-ui, -apple-system, Segoe UI, Roboto, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif}
-      header{position:fixed;inset:12px auto auto 12px;z-index:10;display:flex;gap:10px;align-items:center;background:var(--glass);padding:10px 12px;border-radius:14px;backdrop-filter: blur(6px);box-shadow:0 6px 16px rgba(0,0,0,.35)}
-      .title{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:min(48vw,520px)}
-      .muted{color:var(--muted);font-size:12px}
-      .toolbar{position:fixed;inset:auto 12px 12px auto;z-index:10;display:flex;gap:8px;background:var(--glass);padding:10px;border-radius:14px;backdrop-filter: blur(6px);box-shadow:0 6px 16px rgba(0,0,0,.35)}
-      button{appearance:none;border:1px solid #2a2a2b;background:#1b1c1f;color:var(--fg);padding:8px 10px;border-radius:12px;cursor:pointer}
-      button:hover{border-color:#3a3a3b}
-      button:active{transform:translateY(1px)}
-      a.link{color:var(--accent);text-decoration:none;align-self:center}
-      .viewer{position:fixed;inset:0}
-      .stage{position:absolute;inset:0;touch-action:none}
-      .image{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);transform-origin:center center;max-width:min(92vw,1100px);max-height:92vh;will-change:transform;box-shadow:0 10px 30px rgba(0,0,0,.45);border-radius:8px}
-      .hint{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);color:var(--muted);font-size:12px;background:var(--glass);padding:6px 10px;border-radius:12px;backdrop-filter:blur(6px)}
-      .hidden{display:none}
-      .footer{position:fixed;left:12px;bottom:12px;color:var(--muted);font-size:12px}
-      code{background:#191b1f;padding:2px 6px;border-radius:6px}
+      /* reset */
+      html, body { height: 100%; margin: 0; }
+      body { background: #ffffff; }
+
+      /* 공통: 이미지 요소 기본값 */
+      img { display: block; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+
+      /* 데스크톱: 중앙 정렬 */
+      @media (min-width: 769px) {
+        body { display: grid; place-items: center; }
+        img.poster { max-width: min(82vw, 1200px); max-height: 92vh; height: auto; width: auto; }
+      }
+
+      /* 모바일: 화면에 꽉 차게(크롭 없이 화면에 맞게) */
+      @media (max-width: 768px) {
+        html, body { background: #000; }
+        /* 포스터 비율을 유지하며 화면을 가득 채움(여백 최소화). 
+           contain: 전체 보이게(레이터박스 가능). cover를 원하면 아래 contain을 cover로 바꾸세요. */
+        img.poster { width: 100vw; height: 100vh; object-fit: contain; object-position: center center; }
+      }
     </style>
   </head>
   <body>
-    <header>
-      <div class="title" id="title">Flower Creators Lounge 2025</div>
-      <div class="muted" id="desc">포스터를 확대·이동하며 볼 수 있어요</div>
-    </header>
-
-    <div class="toolbar">
-      <button id="zoomIn" title="확대 (+)">＋</button>
-      <button id="zoomOut" title="축소 (−)">−</button>
-      <button id="reset" title="리셋 (R)">Reset</button>
-      <a id="download" download="2025FCL.jpeg" class="link">다운로드</a>
-    </div>
-
-    <div class="viewer">
-      <div class="stage" id="stage">
-        <!-- 기본 이미지: 같은 폴더의 2025FCL.jpeg -->
-        <img id="img" class="image" src="./2025FCL.jpeg" alt="2025FCL Poster" />
-      </div>
-    </div>
-
-    <div id="hint" class="hint">휠로 확대/축소, 드래그로 이동 · 모바일은 두 손가락으로 확대/이동</div>
-    <div class="footer">쿼리 파라미터 지원: <code>?img=이미지URL&title=제목&desc=설명</code></div>
-
-    <script>
-      // --- 쿼리 파라미터로 이미지/타이틀/설명 교체 가능 ---
-      const qs = new URLSearchParams(location.search);
-      const imgParam = qs.get('img');
-      const titleParam = qs.get('title');
-      const descParam = qs.get('desc');
-      const img = document.getElementById('img');
-      const titleEl = document.getElementById('title');
-      const descEl = document.getElementById('desc');
-      if (imgParam) { try { const u = new URL(imgParam, location.href); if(/^https?:/.test(u.protocol)) img.src = u.href; } catch(e){} }
-      if (titleParam) titleEl.textContent = titleParam;
-      if (descParam) descEl.textContent = descParam;
-      document.getElementById('download').href = img.src;
-
-      // --- Zoom & Pan ---
-      let scale = 1, minScale = 0.25, maxScale = 6;
-      let pos = {x:0, y:0};
-      const stage = document.getElementById('stage');
-      function apply(){
-        img.style.transform = `translate(calc(-50% + ${pos.x}px), calc(-50% + ${pos.y}px)) scale(${scale})`;
-      }
-      function zoom(dir, cx, cy){
-        const old = scale;
-        scale = Math.min(maxScale, Math.max(minScale, scale * (dir>0?1.1:0.9)));
-        const rect = img.getBoundingClientRect();
-        const dx = (cx - rect.left - rect.width/2);
-        const dy = (cy - rect.top - rect.height/2);
-        pos.x -= dx * (scale/old - 1);
-        pos.y -= dy * (scale/old - 1);
-        apply();
-      }
-      stage.addEventListener('wheel', (e)=>{ e.preventDefault(); zoom(e.deltaY<0?1:-1, e.clientX, e.clientY); }, {passive:false});
-      let dragging=false, last={x:0,y:0};
-      stage.addEventListener('mousedown', (e)=>{ dragging=true; last={x:e.clientX,y:e.clientY}; });
-      window.addEventListener('mouseup', ()=> dragging=false);
-      window.addEventListener('mousemove', (e)=>{
-        if(!dragging) return; const dx=e.clientX-last.x, dy=e.clientY-last.y; last={x:e.clientX,y:e.clientY}; pos.x+=dx; pos.y+=dy; apply();
-      });
-      // touch
-      let t0=null, t1=null, baseDist=0, baseScale=1, basePos={x:0,y:0}, center={x:0,y:0};
-      stage.addEventListener('touchstart', (e)=>{
-        if(e.touches.length===1){ t0=e.touches[0]; }
-        if(e.touches.length===2){ t0=e.touches[0]; t1=e.touches[1]; baseDist=Math.hypot(t0.clientX-t1.clientX, t0.clientY-t1.clientY); baseScale=scale; basePos={...pos}; center={x:(t0.clientX+t1.clientX)/2, y:(t0.clientY+t1.clientY)/2}; }
-      }, {passive:false});
-      stage.addEventListener('touchmove', (e)=>{
-        e.preventDefault();
-        if(e.touches.length===1 && !t1){ const t=e.touches[0]; const dx=t.clientX-t0.clientX, dy=t.clientY-t0.clientY; t0=t; pos.x+=dx; pos.y+=dy; apply(); }
-        else if(e.touches.length===2){ const a=e.touches[0], b=e.touches[1]; const dist=Math.hypot(a.clientX-b.clientX, a.clientY-b.clientY); const s=Math.min(maxScale, Math.max(minScale, baseScale*(dist/baseDist))); const rect=img.getBoundingClientRect(); const dx=(center.x-rect.left-rect.width/2); const dy=(center.y-rect.top-rect.height/2); pos.x = basePos.x - dx*(s/baseScale-1); pos.y = basePos.y - dy*(s/baseScale-1); scale=s; apply(); }
-      }, {passive:false});
-      stage.addEventListener('touchend', ()=>{ if(event.touches.length<2) t1=null; if(event.touches.length===0) t0=null; });
-      // buttons & keys
-      document.getElementById('zoomIn').onclick = ()=> zoom(1, innerWidth/2, innerHeight/2);
-      document.getElementById('zoomOut').onclick = ()=> zoom(-1, innerWidth/2, innerHeight/2);
-      document.getElementById('reset').onclick = ()=>{ scale=1; pos={x:0,y:0}; apply(); };
-      addEventListener('keydown', (e)=>{ if(e.key==='+'||e.key==='=') document.getElementById('zoomIn').click(); if(e.key==='-'||e.key==='_') document.getElementById('zoomOut').click(); if(e.key==='r'||e.key==='R') document.getElementById('reset').click(); });
-      // first interaction -> hide hint
-      const hint = document.getElementById('hint');
-      const hide=()=>hint.classList.add('hidden');
-      ['wheel','mousedown','touchstart','keydown'].forEach(ev=>stage.addEventListener(ev, hide, {once:true}));
-      apply();
-    </script>
+    <!-- 같은 폴더의 이미지 사용 -->
+    <img class="poster" src="./2025FCL.jpeg" alt="Flower Creators Lounge 2025 Poster" />
   </body>
 </html>
