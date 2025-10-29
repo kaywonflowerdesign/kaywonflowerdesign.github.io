@@ -21,32 +21,27 @@
     <meta name="twitter:description" content="Flower Creators Lounge 2025" />
     <meta name="twitter:image" content="https://kaywonflowerdesign.github.io/2025FCL/2025FCL.jpeg?v=2" />
 
-
     <style>
       /* reset */
       html, body { height: 100%; margin: 0; }
       body { background: #ffffff; }
-
-      /* 공통: 이미지 요소 기본값 */
       img { display: block; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 
-      /* 데스크톱: 중앙 정렬 */
+      /* 데스크톱: 화면 가운데 정렬 + 업스케일 허용 */
       @media (min-width: 769px) {
         body { display: grid; place-items: center; }
-        img.poster { max-width: min(82vw, 1200px); max-height: 92vh; height: auto; width: auto; }
+        /* 원본이 작아도 크게 보이도록 width 지정 (max-width만 쓰면 원본 크기까지만 보임) */
+        img.poster { width: min(82vw, 1200px); height: auto; }
       }
 
-      /* 모바일: 화면에 꽉 차게(크롭 없이 화면에 맞게) */
+      /* 모바일: 가로 100%로 꽉 차고 세로 스크롤 */
       @media (max-width: 768px) {
-        html, body { background: #000; }
-        /* 포스터 비율을 유지하며 화면을 가득 채움(여백 최소화). 
-           contain: 전체 보이게(레이터박스 가능). cover를 원하면 아래 contain을 cover로 바꾸세요. */
-        img.poster { width: 100vw; height: 100vh; object-fit: contain; object-position: center center; }
+        body { display: block; overflow-y: auto; background: #ffffff; }
+        img.poster { width: 100%; height: auto; max-width: none; }
       }
     </style>
   </head>
   <body>
-    <!-- 같은 폴더의 이미지 사용 -->
     <img class="poster" src="./2025FCL.jpeg" alt="Flower Creators Lounge 2025 Poster" />
   </body>
 </html>
